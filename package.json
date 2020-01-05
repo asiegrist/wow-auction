@@ -12,8 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lua": "0.0.1",
-    "luaparse": "^0.2.1",
     "next": "^9.1.7",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
