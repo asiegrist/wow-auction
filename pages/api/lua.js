@@ -1,28 +1,66 @@
 const fs = require('fs');
-var ws = require('windows-shortcuts');
-const parseLua = (data) => 
-  data.replace(/\[(.*)\]\s\=\s/g,'$1:')     // change equal to colon & remove outer brackets
-    .replace(/[\t\r\n]/g,'')              // remove tabs & returns
-    .replace(/\}\,\s--\s\[\d+\]\}/g,']]') // replace sets ending with a comment with square brackets
-    .replace(/\,\s--\s\[\d+\]/g,',')      // remove close subgroup and comment
-    .replace(/,(\}|\])/g,'$1')            // remove trailing comma
-    .replace(/\}\,\{/g,'],[')             // replace curly bracket set with square brackets
-    .replace(/\{\{/g,'[[')                // change double curlies to square brackets
-    .replace(/.*\=/, '')
+const ws = require('windows-shortcuts');
 
-export default (req, res) => {
-  ws.query('Auc-Stat-Simple.lua.lnk', (error, options) => {
+import parseLua from './utils/luaParse'
 
-  fs.readFile(options.target, 'utf8', (err, data) => {
-    if (err) console.error(err);
-    if (data) {
-      const luaJson = JSON.parse(parseLua(data));
-      res.status(200).json(luaJson.RealmData.Finkle);
+const getFile = (resolve) => (err, dataString) => {
+      if (err) console.error('error', err);
+
+      if (dataString) {
+
+        // console.log(dataString)
+        try {
+          console.log(parseLua(dataString))
+          console.log('parsed')
+          resolve(parseLua(dataString));
+        } catch (err) {
+          throw err
+        }
+        
+        // resolve(JSON.parse(parseLua(dataString)));
+      }
     }
 
-    res.status(200);
-  });
+const getLuaJson = ({linkname, filename}) => new Promise((resolve, reject) => {
+  if(linkname) {
+    ws.query(linkname, (error, options) => {
+      const luaPath = `${options.target}/${filename}`
 
-})
+      fs.readFile(luaPath, 'utf8', getFile(resolve));
+    })
+  } else {
+    fs.readFile(filename, 'utf8', getFile(resolve));
+  }
+ })
 
+// fs.readFile('data/profession.test.lua', 'utf8', (err, dataString) => {
+//   if (err) console.error('error', err);
+
+//   if (dataString) {
+
+//     // console.log(dataString)
+//     try {
+//       console.log(parseLua(dataString))
+//       console.log('parsed')
+//       // resolve(parseLua(dataString));
+//     } catch (err) {
+//       throw err
+//     }
+
+//   }
+// });
+//  const luaJson = getLuaJson({linkname: 'SavedVariables.lnk', filename: 'Auc-Stat-Simple.lua'})
+//  const luaJson = getLuaJson({filename: 'data/Auc-Stat-Simple.test.lua'})
+ const luaJson = getLuaJson({filename: 'data/source.lua'})
+//  const luaJson = getLuaJson({filename: 'data/profession.test.lua'})
+
+export default (req, res) => {
+  // console.log(luaJson)
+  // res.status(200)
+  luaJson.then((data) => {
+    console.log('promise', data)
+    res.status(200).send(data);
+    // res.status(200).json(data);
+  })
+  // res.status(200)
 };
