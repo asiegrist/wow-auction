@@ -10,6 +10,6 @@ export default (dataString) =>
     .replace(/\{\{/g,'[[')                            // change double curlies to square brackets
     .replace(/\[\["/g,'[{"')                            // change double curlies to square brackets
     .replace(/\{\[/g,'[[')                            // change {[ to square brackets
-    // .replace(/[\t\r\n]/g,'')                          // remove tabs & returns
-    // .replace(/,(\}|\])/g,'$1')                        // remove trailing comma
+    .replace(/[\t\r\n]/g,'')                          // remove tabs & returns
+    .replace(/,(\}|\])/g,'$1')                        // remove trailing comma
     .replace(/.*?\=/, '')
