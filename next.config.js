@@ -11,7 +11,7 @@ module.exports = withCSS({
           publicPath: '/_next/static/',
           outputPath: 'static/',
           name: '[name].[ext]',
-          // url: false, // This fixed my problem
+          url: false, // This fixed my problem
         },
       },
     })

@@ -1,9 +1,10 @@
-import './styles.css'
-import 'semantic-ui-css/semantic.css'
-// import './styles.css'
+// import 'typeface-roboto';
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return <> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
+    <Component {...pageProps} />
+  </>
 }
 
 export default MyApp

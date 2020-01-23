@@ -1,33 +1,36 @@
-// // import useSWR from 'swr';
-// import useGetDaily from '../utils/useGetDaily'
-// import Money from './Money'
-// import CraftingDetails from './CraftingDetails'
+import Money from './Money'
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 
-// import { getDailyData } from '../utils/extractSimpleData'
-// // import items from '../../scripts/utils/getItems'
-// // import spells from '../../data/utils/getSpells'
+const Item = ({ item }) => {
 
-// const Item = ({ id }) => {
-//   const item = items[id]
+  // return <tr key={item.id}>
+  //   <td className="left">{item.name}</td>
+  //   <td><Money value={item.auction.minBuyout} /></td>
+  //   <td><Money value={item.auction.dayAverage} /></td>
+  //   <td><Money value={item.craft.min} /></td>
+  //   <td><Money value={item.craft.avg} /></td>
+  //   <td>{item.analysis.min}</td>
+  //   <td>{item.analysis.avg}</td>
 
-//   if (!item ) {
-//     console.log('Not found', id)
-//     return <div>{id}</div>
-//   }
+  //   <style jsx>{`
+  //       td {
+  //         text-align: right;
+  //       }
+  //       .left {
+  //         text-align: left;
+  //       }
+  //     `}</style>
+  // </tr>
+  return <TableRow key={item.id}>
+          <TableCell>{item.name}</TableCell>
+          <TableCell align="right"><Money value={item.auction.minBuyout} /></TableCell>
+          <TableCell align="right"><Money value={item.auction.dayAverage} /></TableCell>
+          <TableCell align="right"><Money value={item.craft.min} /></TableCell>
+          <TableCell align="right"><Money value={item.craft.avg} /></TableCell>
+          <TableCell align="right"><Money value={item.analysis.min} /></TableCell>
+          <TableCell align="right"><Money value={item.analysis.avg} /></TableCell>
+        </TableRow>
+}
 
-//   // const { data, error } = useSWR("/api/lua");
-//   const { daily = {} } = useGetDaily()
-//   console.log('item', daily[id])
-
-//   const dailyData = daily[id] && getDailyData(daily[id])
-//   console.log('dailyData', dailyData)
-
-
-//   return <div>
-//     {id} {item.name} => {item.itemClass} : {item.additional}  =>
-//     <Money value={dailyData?.dayAverage} />
-//     {/* <CraftingDetails id={id} /> */}
-//   </div>
-// }
-
-// export default Item
+export default Item
